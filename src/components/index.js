@@ -1,9 +1,5 @@
-import Login from './Login';
-import Map from './Map';
-import SignUp from './SignUp';
+import Capture from './Capture';
 
 export {
-Login,
-Map,
-SignUp
+Capture
 }

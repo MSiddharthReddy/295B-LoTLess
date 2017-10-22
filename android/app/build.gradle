@@ -95,7 +95,7 @@ android {
 
     defaultConfig {
         applicationId "com.advice"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -131,8 +131,16 @@ android {
         }
     }
 }
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
 
 dependencies {
+    compile project(':react-native-camera')
+    compile project(':easy-bluetooth-classic')
+    compile project(':react-native-bluetooth-serial')
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
