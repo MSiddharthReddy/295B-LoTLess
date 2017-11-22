@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import io.github.douglasjunior.ReactNativeEasyBluetooth.classic.ClassicPackage;
-import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -29,7 +28,6 @@ public class MainApplication extends Application implements ReactApplication {
                 new MainReactPackage(),
             new RCTCameraPackage(),
             new ClassicPackage(),
-                new RCTBluetoothSerialPackage(),
                 new MapsPackage()
         );
     }
