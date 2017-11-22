@@ -16,26 +16,26 @@ class Main extends Component {
     EasyBluetooth.init(config)
       .then(function (config) {
         console.log("config done!");
-        EasyBluetooth.startScan()
-            .then(function (devices) {
-              console.log("all devices found:");
-              console.log(devices);
-              let device = devices.filter((device) => {
-                return device.name === 'H-C-2010-06-01';
-              })[0];
-              console.log(device);
-              EasyBluetooth.connect(device)
-              .then(() => {
-                console.log("Connected!");
-                console.log(device)
-              })
-              .catch((ex) => {
-                console.warn(ex);
-              })
-            })
-            .catch(function (ex) {
-              console.warn(ex);
-            });
+        // EasyBluetooth.startScan()
+        //     .then(function (devices) {
+        //       console.log("all devices found:");
+        //       console.log(devices);
+        //       let device = devices.filter((device) => {
+        //         return device.name === 'H-C-2010-06-01';
+        //       })[0];
+        //       console.log(device);
+        //       EasyBluetooth.connect(device)
+        //       .then(() => {
+        //         console.log("Connected!");
+        //         console.log(device)
+        //       })
+        //       .catch((ex) => {
+        //         console.warn(ex);
+        //       })
+        //     })
+        //     .catch(function (ex) {
+        //       console.warn(ex);
+        //     });
       })
       .catch(function (ex) {
         console.warn(ex);

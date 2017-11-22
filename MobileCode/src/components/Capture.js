@@ -70,8 +70,7 @@ export default class Capture extends Component {
      } = styles;
   return (
   <View style={container}>
-      {/* <Image source={{uri: 'http://yiworks.com/wp-content/uploads/2016/11/Cool-Light-Grey-background-fantastic-imago-creative-studio-video-production.jpg'}} style={background}> */}
-      <Camera
+    <Camera
          ref={(cam) => {
            this.camera = cam;
          }}
@@ -81,7 +80,6 @@ export default class Capture extends Component {
          <Image source={{uri: this.state.image}} style={{width: 100, height: 100}} />
          <Text style={text}>{this.state.weight}</Text>
        </Camera>
-  {/* </Image> */}
   </View>
   );
   }

@@ -8,7 +8,7 @@ const Button = (props) => {
   <TouchableOpacity onPress={props.onPress} style={buttonStyle} >
     <View style={textStyle}>
       <Content
-      size={18}
+      size={21}
       color='black'
       weight='700'
       >
@@ -27,10 +27,11 @@ const styles = {
     borderRadius: 3,
     marginLeft: 25,
     marginRight: 25,
-    shadowColor: 'black',
-    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'grey',
+    shadowOffset: { width: 2, height: 2 },
     shadowRadius: 2,
-    shadowOpacity: 0.5
+    shadowOpacity: 0.5,
+    marginTop: 40
   },
   textStyle: {
     alignSelf: 'center',

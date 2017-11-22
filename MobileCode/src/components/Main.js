@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import RNAnimatedTabs from 'rn-animated-tabs';
 import Capture from './Capture';
+import StoreKeeper from './StoreKeeper';
 
 export default class TabTop extends Component {
   constructor(props) {
@@ -13,6 +14,13 @@ export default class TabTop extends Component {
 
   handleTabChange = (value) => this.setState({ currentTab: value });
 
+  returnPage = () => {
+    switch(this.state.currentTab) {
+      case 1: return <Capture />;
+      default: return <StoreKeeper />;
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -20,7 +28,7 @@ export default class TabTop extends Component {
           tabTitles={['Store Keeper', 'User', 'Checkout']}
           onChangeTab={this.handleTabChange} />
          <View style={[styles.container, styles.center]}>
-          
+           {this.returnPage()}
          </View>
      </View>
     );
