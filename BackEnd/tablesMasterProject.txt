@@ -1,0 +1,109 @@
+---shelfdetails---
+shelfid
+shelfname
+itemid
+totalweight
+numberofitems
+
+---itemdetails---
+itemid
+itemname
+itemweight
+itemprice
+
+---activitydetails---
+activityid
+shelfid
+itemid
+weightdecreased
+numberofitemspicked
+imageid
+time
+
+---imagedetails---
+imageid
+imagepath
+
+---cartdetails---
+cartid
+imageid
+active
+
+---cartmappings---
+cartid
+activityid
+
+
+get /shelves/:id
+response
+{
+	shelfdetails: {}
+}
+
+post /shelves
+{
+	shelfname
+	itemid (optional)
+	totalweight (optional)
+}
+response
+{
+	id: newShelfID
+}
+
+post /shelves/addtoshelf
+{
+	shelfid
+	itemid
+	totalweight
+}
+response
+{
+	"msg": "Ok"
+}
+
+
+post /items
+{
+	itemname
+	itemweight
+	itemprice
+}
+response
+{
+	id: newItemID
+}
+
+post /activities
+{
+	shelfid
+	itemid
+	totalweight
+	image
+}
+response
+{
+	"msg": "Ok"/"Internal Ok",
+	"numberofitemsleft": noOfItemsLeft
+}
+
+post /images
+{
+	image
+}
+response
+{
+	"id": newImageId
+}
+
+post /checkout
+{
+	"img" : image
+}
+response
+{
+	"cartId" : cartId,
+	"cart" : [ { "itemname" : itemname, "count": count, "itemprice": itemprice, "total" : total},
+		{ "itemname" : itemname, "count": count, "itemprice": itemprice, "total" : total} ],
+	"total" : totalAmount
+}
