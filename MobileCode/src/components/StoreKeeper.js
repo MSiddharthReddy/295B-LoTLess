@@ -3,7 +3,9 @@ import axios from 'axios';
 import { View, Text, Dimensions, Image, TextInput } from 'react-native';
 import { Button, Content } from './CommonComponents';
 import EasyBluetooth from 'easy-bluetooth-classic';
-import Modal from 'react-native-modal'
+import Modal from 'react-native-modal';
+
+const POST_URL = 'http://ec2-34-209-113-9.us-west-2.compute.amazonaws.com:6565/shelves/addtoshelf';
 
 
 export default class StoreKeeper extends Component {
@@ -14,11 +16,13 @@ export default class StoreKeeper extends Component {
    this.state = {
      weight: 0,
      isModalVisible: false,
-     itemName: '',
-     itemQuantity: ''
+     itemId: ''
    };
 }
 
+componentWillUnmount() {
+    this.onDataReadEvent.remove();
+}
 _showModal = () => this.setState({ isModalVisible: true })
 
   _hideModal = () => this.setState({ isModalVisible: false })
@@ -33,7 +37,19 @@ _showModal = () => this.setState({ isModalVisible: true })
    }
 
    sendDetails = () => {
-     this._hideModal();
+     let that = this;
+     axios.post(POST_URL, {
+    'shelfid': 1,
+    'itemid': Number(this.state.itemId),
+    'totalweight': this.state.weight
+  })
+  .then(function (response) {
+    that._hideModal();
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
    }
    render() {
      const {
@@ -59,17 +75,10 @@ _showModal = () => this.setState({ isModalVisible: true })
            </Content>
           <TextInput
           style={textBox}
-          onChangeText={(itemName) => this.setState({itemName})}
-          value={this.state.itemName}
-          placeholder={'Item Name'}
+          onChangeText={(itemId) => this.setState({itemId})}
+          value={this.state.itemId}
+          placeholder={'Item Id'}
           />
-        <TextInput
-        style={textBox}
-        onChangeText={(itemQuantity) => this.setState({itemQuantity})}
-        value={this.state.itemQuantity}
-        placeholder={'Item Quantity'}
-
-        />
          <Button onPress={this.sendDetails}> Send Details</Button>
        </Image>
 
@@ -108,11 +117,11 @@ const styles = {
     flexDirection: 'column'
   },
   text1: {
-    color: 'white',
+    color: 'black',
     fontSize: 60
   },
   text: {
-    color: 'white',
+    color: 'black',
     fontSize: 80
   },
   preview: {

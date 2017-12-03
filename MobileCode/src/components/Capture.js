@@ -8,58 +8,98 @@ import EasyBluetooth from 'easy-bluetooth-classic';
 import Camera from 'react-native-camera';
 
 
+const GET_URL = 'http://ec2-34-209-113-9.us-west-2.compute.amazonaws.com:6565/shelves/1';
+
+const POST_URL = 'http://ec2-34-209-113-9.us-west-2.compute.amazonaws.com:6565/activities';
+
+
+
 export default class Capture extends Component {
 
   constructor() {
     super();
-  this.onDataReadEvent = EasyBluetooth.addOnDataReadListener(this.onDataRead);
+  this.onDataReadEvent = EasyBluetooth.addOnDataReadListener(this.onDataRead2);
+  this.pictureTaken = false;
    this.state = {
-     weight: 0,
-     image: ''
+     weight:0,
+     count: 0
    };
   }
 
+  componentWillUnmount() {
+      this.onDataReadEvent.remove();
+  }
+
   componentDidMount() {
-    console.log("Starting to Scan")
+let that = this;
+    axios.get(GET_URL)
+  .then(function (response) {
+    that.setState({count: response.data.shelfdetails.numberofitems})
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
 
   }
 
-  onDataRead = (data) => {
+  onDataRead2 = (data) => {
+
      console.log("onDataRead");
-     this.setState({
-       weight: data
-     });
      this.takePicture();
+     this.setState({weight: data})
      console.log(data);
 
    }
 
    takePicture = () => {
     const options = {};
+    let that = this;
     console.log('Taking Picture');
+    // if(!this.pictureTaken) {
+      this.pictureTaken = true;
     this.camera.capture({metadata: options})
       .then((data) => {
         console.log(data);
-        this.setState({
+        that.setState({
           image: data.path
         });
-        //@TODO this is the call to send the picture and data to the server.
-        // const data = new FormData();
-        // data.append('weight', this.state.weight); // you can append anyone.
-        // data.append('photo', {
-        //   uri: data.path,
-        //   type: 'image/jpeg', // or photo.type
-        //   name: 'userPhoto'
-        // });
-        // fetch(url, {
-        //   method: 'post',
-        //   body: data
-        // }).then(res => {
-        //   console.log(res)
-        // });
+        const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+        // setTimeout(() => {
+          const postdata = new FormData();
+          postdata.append('totalweight', that.state.weight); // you can append anyone.
+          postdata.append('shelfid', 1);
+          postdata.append('img', {
+            uri: data.path,
+            type: 'image/jpeg', // or photo.type
+            name: 'userPhoto'
+          });
+          // this is the call to send the picture and data to the server.
+          fetch(POST_URL, {
+          method: 'post',
+          body: postdata
+        }).then(async res => {
+          that.pictureTaken = true;
+          console.log(res);
+          let data = await res.json();
+          return data
+        }).then(function(data) {
+          console.log(data);
+          // let parsedData = JSON.parse(data);
+          that.setState({
+            count: data.numberofitemsleft,
+          })
+        }).catch(err => console.log(err));
       })
       .catch(err => console.error(err));
+    // }, 10);
+    // }
   }
+
 
 
    render() {
@@ -78,7 +118,7 @@ export default class Capture extends Component {
          style={styles.preview}
          aspect={Camera.constants.Aspect.fill}>
          <Image source={{uri: this.state.image}} style={{width: 100, height: 100}} />
-         <Text style={text}>{this.state.weight}</Text>
+         <Text style={text}>{this.state.count}</Text>
        </Camera>
   </View>
   );

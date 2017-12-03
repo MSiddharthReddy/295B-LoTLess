@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import RNAnimatedTabs from 'rn-animated-tabs';
 import Capture from './Capture';
+import Checkout from './Checkout';
 import StoreKeeper from './StoreKeeper';
 
 export default class TabTop extends Component {
@@ -17,6 +18,7 @@ export default class TabTop extends Component {
   returnPage = () => {
     switch(this.state.currentTab) {
       case 1: return <Capture />;
+      case 2: return <Checkout />;
       default: return <StoreKeeper />;
     }
   }
